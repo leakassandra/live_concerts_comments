@@ -1,3 +1,8 @@
+"""
+Retrieves the live-chat comments from past YouTube Live video. The script creates a new folder 
+for each video, named after the video's title. 
+"""
+
 import os
 import sys
 import csv
@@ -6,6 +11,17 @@ from datetime import datetime
 from chat_downloader import ChatDownloader
 from urllib.parse import urlparse, parse_qs
 from pyyoutube import Client, Api
+
+
+'''
+Returns the Title of the video (for storing).
+'''
+def return_title(api, video_id):
+    # get video object using YouTube Data API
+    video = api.get_video_by_id(video_id=video_id).items[0]
+    snippet = video.snippet
+    return snippet.title
+
 
 '''
 Save basic metadata about a YouTube video as a text file.
@@ -19,7 +35,6 @@ def save_video_metadata(api, video_id, filename):
 
     # publishedAt (ISO string) into Python datetime object
     published_at = datetime.fromisoformat(snippet.publishedAt.replace("Z", "+00:00"))
-    
     # write video's metadata to text file
     with open(filename, "w", encoding="utf-8") as f:
         f.write(f"Title: {snippet.title}\n")
@@ -90,13 +105,15 @@ def main():
   link = sys.argv[1]
   # call func to extract ID from video URL
   video_id = extract_video_id(link)
-  # create new directory (named after video_id)
-  folder_path = f"comments_live/video_{video_id}"
-  os.makedirs(folder_path, exist_ok=True)
+  # get title of the video
+  title = return_title(api, video_id)
+  # create new directory (named after title)
+  os.mkdir(f"comments_live/{video_id}")
+  folder_path = f"comments_live/{video_id}"
   # create metadata text file
-  published_at = save_video_metadata(api, video_id, os.path.join(folder_path, "info.txt"))
+  published_at = save_video_metadata(api, video_id, os.path.join(folder_path, f"{title}_info.txt"))
+  os.makedirs(folder_path, exist_ok=True)
   # create csv of comment data
-  
   save_live_chat(link, os.path.join(folder_path, "comments.csv"), published_at)
 
 if __name__ == "__main__":

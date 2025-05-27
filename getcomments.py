@@ -1,12 +1,26 @@
+"""
+Retrieves the normal comment threads from any YouTube video. The script creates a new folder for each video, 
+named after the video's title. 
+"""
+
 import os
 import sys
 from datetime import datetime
 import pandas as pd
 import settings
-import pprint as pp
-from pyyoutube import Client, Api
+from pyyoutube import Api
 from urllib.parse import urlparse, parse_qs
 import regex as re
+
+'''
+Returns the Title of the video (for storing).
+'''
+def return_title(api, video_id):
+    # get video object using YouTube Data API
+    video = api.get_video_by_id(video_id=video_id).items[0]
+    snippet = video.snippet
+    return snippet.title
+
 
 '''
 Save basic metadata about a YouTube video as a text file.
@@ -100,8 +114,10 @@ def main():
   link = sys.argv[1]
   # call func to extract ID from video URL
   video_id = extract_video_id(link)
-  # create new directory (named after video_id)
-  folder_path = f"comment_csvs/video_{video_id}"
+  title = return_title(api,video_id)
+  os.mkdir(f"comments_normal/{title}")
+  # create new directory (named after video title
+  folder_path = f"comments_normal/{title}"
   os.makedirs(folder_path, exist_ok=True)
   # create metadata text file
   published_at = save_video_metadata(api, video_id, os.path.join(folder_path, "info.txt"))
