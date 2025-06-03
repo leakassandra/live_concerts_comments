@@ -2,26 +2,37 @@
 Gets the raw (live)-comments csv file from comments_live/<DESIRED_VIDEO>, or comments_normal/<DESIRED_VIDEO> 
 and preprecesses the csv file for LM training.
 """
-
+# wieviele instanzen sind nur emojis, mischung und keine
 import csv
 import os
 import sys
 import pandas as pd
 import settings
 from pyyoutube import Api
-from urllib.parse import urlparse, parse_qs
 import regex as re
-import langdetect 
+from langdetect import detect
+from langdetect.lang_detect_exception import LangDetectException # might also use this to detect english lang
 import emoji
+from pathlib import Path
 
-# needed to check for emojis in a string
-emoji_pattern = re.compile("["
-        u"\U0001F600-\U0001F64F"  # emoticons
-        u"\U0001F300-\U0001F5FF"  # symbols & pictographs
-        u"\U0001F680-\U0001F6FF"  # transport & map symbols
-        u"\U0001F1E0-\U0001F1FF"  # flags (iOS)
-                           "]+", flags=re.UNICODE)
 
+# Raw pattern strings
+emoji_unicode_pattern = (
+    "[" +
+    u"\U0001F600-\U0001F64F"  # emoticons
+    u"\U0001F300-\U0001F5FF"  # symbols & pictographs
+    u"\U0001F680-\U0001F6FF"  # transport & map symbols
+    u"\U0001F1E0-\U0001F1FF"  # flags
+    "]"
+)
+
+shortcode_pattern = r":[a-zA-Z0-9_]+:"
+
+# Combine the two raw strings
+combined_pattern = f"({emoji_unicode_pattern}|{shortcode_pattern})"
+
+# Compile the final regex
+emoji_pattern = re.compile(combined_pattern, flags=re.UNICODE)
 
 '''
 Helper: turn csv file into pandas dataframe.
@@ -41,9 +52,9 @@ def get_publisher(api, video_id):
     publisher = snippet.channelTitle
     return publisher
 
-"""
+'''
 Removes the comments of the video's host.
-"""
+'''
 def remove_publisher_comments(file_path, api, video_id):
     # turn the live-video comment file we want to preprocess into pandas dataframe
     df = get_comments_csv(file_path)
@@ -64,17 +75,22 @@ def remove_publisher_comments(file_path, api, video_id):
 Removes instances from datafram that contain non-ascii characters (broadly non-english instances)
 '''
 def remove_non_en(df):
+    counter_emoji = 0
+    counter_mixed = 0
+    counter_text = 0
     # list that stores the indices of the instances that will be removed from dataframe
-    drop_indices = []
+    drop_indices = [] # -> nochmal ausgeben!
     # iterate through dataframe
     for index, row in df.iterrows():
         # get the content of the live comment
         comment = str(row['message']).strip()
         # leave in comment that only contains emojis
         if is_emoji_only(comment):
+            counter_emoji = counter_emoji + 1
             continue
         # if the comment contains emoji(s)
         if contains_emoji(comment):
+            counter_mixed = counter_mixed + 1
             # remove them from the string
             rest = emoji_pattern.sub(r'', comment)
             # if the rest of that string contains non-ascii
@@ -86,6 +102,7 @@ def remove_non_en(df):
                 continue
         # if the comment does not contain emojis
         else:
+            counter_text = counter_text + 1
             # check if it contains non-ascii
             if not comment.isascii():
                 # remove instance if so
@@ -96,6 +113,39 @@ def remove_non_en(df):
     # remove the "non-english" instances
     df.drop(index=drop_indices, inplace=True)
     df.reset_index(drop=True, inplace=True)
+    
+    res_count = f"contains: {counter_emoji} only-emoji instances, {counter_mixed} emoji-text instances and {counter_text} text-only instances."
+    return df, res_count
+
+'''
+Goes over messages once again and removes instances that do not contain ascii-chars but are still probably not english.
+'''
+def remove_langs(df):
+    drop_indices = []
+    for index, row in df.iterrows():
+        # get the content of the live comment
+        comment = str(row['message']).strip()
+        try:
+            if detect(comment) != 'en':
+                drop_indices.append(index)
+        except:
+            continue
+
+    df.drop(index=drop_indices, inplace=True)
+    df.reset_index(drop=True, inplace=True)
+    return df        
+    
+'''
+Adds the columns we later want for annotation (gerade noch imporvisiert).
+'''
+def add_anno_items(df):
+    df['pronoun_use'] = pd.Series(dtype='int')
+    df['emotion_lang'] = pd.Series(dtype='int')
+    df['emoji_use'] = pd.Series(dtype='int')
+    df['exclamation_sync'] = pd.Series(dtype='int')
+    df['reference_other'] = pd.Series(dtype='int')
+    df['group_call'] = pd.Series(dtype='int')
+    df['fandom_lang'] = pd.Series(dtype='int')
     return df
 
 '''
@@ -106,7 +156,6 @@ def contains_emoji(text):
         if character in emoji.EMOJI_DATA:
             return True
     return False
-
 
 '''
 Helper: detect if a string contains only emojis or non-alphanumerics
@@ -124,7 +173,8 @@ def to_anno_file(df,api,video_id):
     snippet = video.snippet
     # get videos name through snippet
     title = snippet.title
-    df.to_csv(f'anno_live_comments/{title}.csv', index=False) 
+    df.to_csv(Path(f'anno_live_comments/{title}.csv'), index=False) 
+    
 
 def main():
     # get user api key from settings file
@@ -133,18 +183,24 @@ def main():
     rel_dir_path = sys.argv[1]
     #rel_dir_path = "comments_live/xSqL-_RSyJw"
     video_id = os.path.basename(rel_dir_path)
-
-    file_path = f"comments_live/{video_id}/comments.csv"
+    file_path = Path(f"comments_live/{video_id}/comments.csv")
     # turn to dataframe
     df_wo_publisher = remove_publisher_comments(file_path,api,video_id)
-    df_cleaned = remove_non_en(df_wo_publisher)
+    df_cleaned, res = remove_non_en(df_wo_publisher)
+    df_cleaned_2 = remove_langs(df_cleaned)
+    print(res)
+    #df_annotation = add_anno_items(df_cleaned_2)
+
     # check if worked kinda
     #print(df_wo_nonascii.iloc[:20])
-    to_anno_file(df_cleaned,api,video_id)
+    to_anno_file(df_cleaned_2,api,video_id)
 
 
 if __name__ == "__main__":
     main()
+
+
+
 
         
 

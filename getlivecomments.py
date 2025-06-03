@@ -11,7 +11,7 @@ from datetime import datetime
 from chat_downloader import ChatDownloader
 from urllib.parse import urlparse, parse_qs
 from pyyoutube import Client, Api
-
+from pathlib import Path
 
 '''
 Returns the Title of the video (for storing).
@@ -108,7 +108,8 @@ def main():
   # get title of the video
   title = return_title(api, video_id)
   # create new directory (named after title)
-  os.mkdir(f"comments_live/{video_id}")
+  path = Path(f"comments_live/{video_id}")
+  os.mkdir(path)
   folder_path = f"comments_live/{video_id}"
   # create metadata text file
   published_at = save_video_metadata(api, video_id, os.path.join(folder_path, f"{title}_info.txt"))
