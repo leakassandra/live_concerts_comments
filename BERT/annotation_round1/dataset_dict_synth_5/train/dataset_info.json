@@ -1,0 +1,40 @@
+{
+  "citation": "",
+  "description": "",
+  "features": {
+    "concert_id": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "message": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "feeling_pos": {
+      "dtype": "bool",
+      "_type": "Value"
+    },
+    "feeling_neg": {
+      "dtype": "bool",
+      "_type": "Value"
+    },
+    "music_ref": {
+      "dtype": "bool",
+      "_type": "Value"
+    },
+    "external_ref": {
+      "dtype": "bool",
+      "_type": "Value"
+    },
+    "phys_react_intentional": {
+      "dtype": "bool",
+      "_type": "Value"
+    },
+    "phys_react_unintentional": {
+      "dtype": "bool",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": ""
+}

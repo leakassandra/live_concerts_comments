@@ -1,0 +1,54 @@
+'n_items': 1533, 
+
+'sums_lea': 
+    feeling_pos                 937
+    feeling_neg                  33
+    music_ref                   314
+    external_ref                155
+    phys_react_intentional      173
+    phys_react_unintentional     23
+
+'sums_lily': 
+    feeling_pos                 1125
+    feeling_neg                  115
+    music_ref                    285
+    external_ref                 469
+    phys_react_intentional         9
+    phys_react_unintentional      24
+
+'label_percent_agreement': 
+    {'feeling_pos': 0.806914546640574, 
+    'feeling_neg': 0.9412915851272016, 
+    'music_ref': 0.8688845401174168, 
+    'external_ref': 0.7495107632093934, 
+    'phys_react_intentional': 0.8904109589041096, 
+    'phys_react_unintentional': 0.9941291585127201}, 
+
+'label_kappa': 
+    {'feeling_pos': 0.5689877241174929, 
+    'feeling_neg': 0.37084461955183456, 
+    'music_ref': 0.5832024639957147, 
+    'external_ref': 0.2743213157758486, 
+    'phys_react_intentional': 0.06650428428515509, 
+    'phys_react_unintentional': 0.8055308892553597}, 
+
+'avg_kappa': 0.44489854949690094
+-> agreement beyond chance for each label separately -> then average over all labels
+
+'avg_jaccard': 0.581322026527506,  
+--> pro element i: Anzahl der Labels, die beide vergeben haben / Anzahl aller unterschiedlichen Labels, die mindestens einer vergeben hat
+--> anschließend durchschnitt
+
+
+
+
+
+
+
+
+
+
+
+Interpretation
+we agree fairly well on the positive labels we assign
+overall high imbalance (many labels not selected) --> Kappa adjusts for chance --> agreement appear weaker
