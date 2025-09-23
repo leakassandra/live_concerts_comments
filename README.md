@@ -2,7 +2,7 @@
 This project tries to analyze the effects of online live concerts by investigating the live comment section of the live-streams of concerts. The following file explains how experiments can be conducted/reproduced.
 
 # YouTube Live Comments
-This directory contains scripts for retrieving comments from YouTube videos. They are saved in csv files. At the moment it uses a visible youtube API key. Should stay private while it is visible.
+This directory contains scripts for retrieving comments from YouTube videos. They are saved in csv files.
 
 ## Get comments (`getcomments.py`)
 Retrieves the normal comment threads from any YouTube video. The script creates a new folder for each video, named after the video's title. 
