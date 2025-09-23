@@ -13,14 +13,6 @@ Example usage:
 python3 getcomments.py <VIDEO's URL>
 ```
 
-## Preprocessing for annotation (`create_annotation_file.py`)
-Gets the raw (live)-comment's csv file from `comments_live/<VIDEO_ID>`, preprecesses the csv file and turns it into a pandas dataframe for LM training. At the moment it removes columns we don't need for analysis removes comments posted by the publisher's/host's of the concert and removes rougly all instances that are non-english. The processed data frame is then saved as `<VIDEO_TITLE>.csv` in `annotation`.
-
-Example usage:
-```
-python3 create_annotation_file.py <relative_path_to_video_id>
-```
-
 # Live comments and Data Processing
 As a heuristic evaluation, as well as the training of a classification model is desired, further scripts and files are needed. The 4 relevant directories all contain their own README file and should be read in the following order:
 
