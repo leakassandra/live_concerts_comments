@@ -30,9 +30,8 @@ This is the class that helps to join the seperate tables per annotator per annot
 
 Example usage: 
 ```
-python3 annotation/join_annos_per_a.py annotation/annotation_round2/anno2_lea annotation/annotation_round2/joined_tables "anno2_lea_joined.csv"
+python3 annotation/join_annotations.py annotation/annotation_round2/anno2_lea annotation/annotation_round2/joined_tables "anno2_lea_joined.csv"
 ```
-
 
 ### Use of: `calc_iaa.py`
 This class calculates the IAA of two joined annotated files (two annotators) in a multi-label setting. To obtain the results, 2 arguments need to be passed through the command line: 

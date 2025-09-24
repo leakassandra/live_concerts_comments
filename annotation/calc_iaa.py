@@ -95,7 +95,7 @@ def main():
         "phys_react"
         ]
     # calculate IAA (printed to the terminal)
-    calculate_multi_label_iaa_binary(annotator1_joined, annotator2_joined, label_cols)
+    print(calculate_multi_label_iaa_binary(annotator1_joined, annotator2_joined, label_cols))
     
 if __name__ == "__main__":
     main()

@@ -2,7 +2,6 @@
 Gets the raw (live)-comments csv file from comments_live/<DESIRED_VIDEO>, or comments_normal/<DESIRED_VIDEO> 
 and preprecesses the csv file for annotation.
 """
-import csv
 import os
 import sys
 import pandas as pd

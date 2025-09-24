@@ -1,0 +1,113 @@
+accelerate==1.8.1
+aiohappyeyeballs==2.6.1
+aiohttp==3.12.13
+aiosignal==1.3.2
+annotated-types==0.7.0
+appdirs==1.4.4
+async-timeout==5.0.1
+attrs==25.3.0
+backports.tarfile==1.2.0
+beautifulsoup4 @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_74rj45rt1p/croot/beautifulsoup4-split_1718029835783/work
+boltons==25.0.0
+brotlicffi @ file:///private/var/folders/sy/f16zz6x50xz3113nwtb9bvq00000gp/T/abs_05qpoetyrv/croot/brotlicffi_1736182869800/work
+build==1.3.0
+CacheControl==0.14.3
+certifi @ file:///private/var/folders/c_/qfmhj66j0tn016nkx_th4hxm0000gp/T/abs_79d9vpdfg7/croot/certifi_1750863850975/work/certifi
+cffi @ file:///private/var/folders/c_/qfmhj66j0tn016nkx_th4hxm0000gp/T/abs_51d1gdg4kr/croot/cffi_1736183297412/work
+charset-normalizer @ file:///croot/charset-normalizer_1721748349566/work
+chat-downloader==0.2.8
+click==8.1.8
+click-default-group==1.2.4
+colorlog==6.9.0
+conda_lock==3.0.4
+crashtest==0.4.1
+dataclasses-json==0.6.7
+datasets==3.6.0
+dill==0.3.8
+distlib==0.4.0
+docstring_parser==0.17.0
+dulwich==0.22.8
+emoji==2.14.1
+ensureconda==1.4.7
+fastjsonschema==2.21.2
+filelock==3.18.0
+frozenlist==1.7.0
+fsspec==2025.3.0
+gitdb==4.0.12
+GitPython==3.1.45
+hf-xet==1.1.5
+huggingface-hub==0.33.0
+idna==3.10
+importlib_metadata==8.7.0
+installer==0.7.0
+isodate==0.7.2
+jaraco.classes==3.4.0
+jaraco.context==6.0.1
+jaraco.functools==4.3.0
+Jinja2==3.1.6
+joblib==1.5.1
+keyring==25.6.0
+langdetect==1.0.9
+MarkupSafe==3.0.2
+marshmallow==3.26.1
+more-itertools==10.8.0
+mpmath==1.3.0
+msgpack==1.1.1
+multidict==6.5.0
+multiprocess==0.70.16
+mypy_extensions==1.1.0
+networkx==3.2.1
+numpy==1.26.4
+oauthlib==3.3.1
+packaging==25.0
+pandas==2.3.0
+pkginfo==1.12.1.2
+platformdirs==4.4.0
+propcache==0.3.2
+psutil==7.0.0
+pyarrow==20.0.0
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pydantic==2.11.9
+pydantic_core==2.33.2
+pyproject_hooks==1.2.0
+PySocks @ file:///opt/concourse/worker/volumes/live/112288ac-9cb0-4e73-768b-13baf4ca6419/volume/pysocks_1605305820043/work
+python-dateutil==2.9.0.post0
+python-youtube==0.9.8
+pytz==2025.2
+PyYAML==6.0.2
+regex==2024.11.6
+requests @ file:///private/var/folders/c_/qfmhj66j0tn016nkx_th4hxm0000gp/T/abs_3c5r_7_lxu/croot/requests_1750426340266/work
+requests-oauthlib==2.0.0
+requests-toolbelt==1.0.0
+ruamel.yaml==0.18.15
+ruamel.yaml.clib==0.2.14
+safetensors==0.5.3
+scikit-learn==1.6.1
+scipy==1.13.1
+semver==3.0.4
+sentencepiece==0.2.0
+shellingham==1.5.4
+six==1.17.0
+smmap==5.0.2
+soupsieve @ file:///private/var/folders/c_/qfmhj66j0tn016nkx_th4hxm0000gp/T/abs_9cjy8iflks/croot/soupsieve_1696347576367/work
+sympy==1.14.0
+threadpoolctl==3.6.0
+tokenizers==0.19.1
+tomli==2.2.1
+tomlkit==0.13.3
+torch==2.2.2
+tqdm==4.67.1
+transformers==4.40.2
+trove-classifiers==2025.9.11.17
+typing-inspect==0.9.0
+typing-inspection==0.4.1
+typing_extensions==4.14.0
+tzdata==2025.2
+urllib3 @ file:///private/var/folders/c_/qfmhj66j0tn016nkx_th4hxm0000gp/T/abs_f8xnjmnanx/croot/urllib3_1750775879857/work
+virtualenv==20.34.0
+websocket-client==1.8.0
+xattr==1.2.0
+xxhash==3.5.0
+yarl==1.20.1
+zipp==3.23.0
+zstandard==0.25.0

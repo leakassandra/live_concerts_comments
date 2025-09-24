@@ -1,6 +1,24 @@
 # The Project
 This project tries to analyze the effects of online live concerts by investigating the live comment section of the live-streams of concerts. The following file explains how experiments can be conducted/reproduced.
 
+# Setup for usage
+Before using, create a virtual environment. There are two options: for conda as well as non-conda users.
+
+## Conda users
+Create and activate the virtual environment:
+```
+conda env create -f setup/environment.yml
+conda activate my_env
+```
+
+## Non-Conda users
+Create and activate the virtual environment:
+```
+python -m venv venv
+source venv/bin/activate
+pip install -r setup/requirements.txt
+```
+
 # YouTube Comments
 This directory contains scripts for retrieving comments from YouTube videos. They are saved in csv files.
 
