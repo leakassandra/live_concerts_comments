@@ -1,0 +1,28 @@
+{'n_items': 343, 'sums_annotator1': feeling_pos     220
+feeling_neg      38
+music_ref        60
+external_ref     68
+phys_react       56
+dtype: int64, 'sums_annotator2': feeling_pos     211
+feeling_neg      26
+music_ref        82
+external_ref     86
+phys_react       49
+
+
+'avg_jaccard': 0.6953838678328473, 
+'label_percent_agreement': {'feeling_pos': 0.9037900874635568, 
+                            'feeling_neg': 0.9533527696793003, 
+                            'music_ref': 0.8367346938775511, 
+                            'external_ref': 0.8017492711370262,
+                            'phys_react': 0.9096209912536443}, 
+
+'label_kappa': {'feeling_pos': 0.7941738039386831, 
+                'feeling_neg': 0.7252703243892671, 
+                'music_ref': 0.505789121597283, 
+                'external_ref': 0.4328648543500462, 
+                'phys_react': 0.651685393258427}, 
+                'avg_kappa': 0.6219566995067412, 
+                
+'n_exact_matches': 189, 
+'prop_exact_matches': 0.5510204081632653}

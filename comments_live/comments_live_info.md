@@ -19,7 +19,7 @@ The command line expects one argument:
 
 Example usage:
 ```
-python3 getlivecomments.py <VIDEO's URL>
+python3 comments_live/getlivecomments.py <VIDEO's URL>
 ```
 
 The folder is stored in `comments_live` by default and can be dragged into the correct round (e.g.: `annotation_round2`)

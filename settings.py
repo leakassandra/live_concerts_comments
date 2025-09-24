@@ -1,2 +1,2 @@
-YOUTUBE_API_KEY = "enter_your_API_key_here"
+YOUTUBE_API_KEY = "add your API key here"
 base_url = "https://www.googleapis.com/youtube/v3/"
