@@ -1,5 +1,4 @@
-# Explanation of structure and python class in `comments_live`
-
+# Explanation of structure and python script in `comments_live`
 This directory contains the python script to get live comments from a YouTube video and the unannotated, raw csv files with the live comments.
 
 ## Annotation rounds

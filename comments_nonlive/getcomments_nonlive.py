@@ -7,10 +7,13 @@ import os
 import sys
 from datetime import datetime
 import pandas as pd
-import settings as settings
 from pyyoutube import Api
 from urllib.parse import urlparse, parse_qs
 import regex as re
+from typing import Optional
+
+YOUTUBE_API_KEY ="enter your API key here"
+base_url = "https://www.googleapis.com/youtube/v3/"
 
 '''
 Returns the Title of the video (for storing).
@@ -90,34 +93,81 @@ def save_comments_to_csv(api, video_id, published_at, filename):
 
 
 '''
-Extracts a YouTube video ID from either long or short URL.
-'''
-def extract_video_id(youtube_url):
-    '''
-    Supports:
+Extract YouTube video ID from many URL forms:
     - https://www.youtube.com/watch?v=VIDEOID
     - https://youtu.be/VIDEOID
-    '''
-    parsed_url = urlparse(youtube_url)
-    if parsed_url.hostname in ["www.youtube.com", "youtube.com"]:
-        query = parse_qs(parsed_url.query)
-        return query.get("v", [None])[0]
-    elif parsed_url.hostname == "youtu.be":
-        return parsed_url.path.lstrip("/")
+    - https://www.youtube.com/live/VIDEOID
+    - https://www.youtube.com/shorts/VIDEOID
+'''
+def extract_video_id(youtube_url: str, follow_redirects: bool = False) -> Optional[str]:
+    if not youtube_url:
+        return None
+
+    # quick acceptance of a plain 11-char id
+    if re.fullmatch(r"[0-9A-Za-z_-]{11}", youtube_url):
+        return youtube_url
+
+    # optionally resolve redirects (useful for /live/ stubs)
+    if follow_redirects:
+        try:
+            import requests
+            # follow redirects to get the final watch URL
+            resp = requests.head(youtube_url, allow_redirects=True, timeout=5)
+            youtube_url = resp.url or youtube_url
+        except Exception:
+            # ignore resolution errors and continue parsing the original url
+            pass
+
+    parsed = urlparse(youtube_url)
+    host = (parsed.hostname or "").lower()
+    path = parsed.path or ""
+
+    # common case: watch?v=ID
+    if host in ("www.youtube.com", "youtube.com", "m.youtube.com", "music.youtube.com"):
+        qs = parse_qs(parsed.query)
+        if "v" in qs:
+            vid = qs["v"][0]
+            if re.fullmatch(r"[0-9A-Za-z_-]{11}", vid):
+                return vid
+
+        # check path segments like /live/<id>, /shorts/<id>, /embed/<id>
+        parts = [p for p in path.split("/") if p]
+        # e.g. ["live", "HOIVqee1qLk"]
+        if len(parts) >= 2 and parts[0] in ("live", "shorts", "embed"):
+            candidate = parts[1]
+            if re.fullmatch(r"[0-9A-Za-z_-]{11}", candidate):
+                return candidate
+
+        # fallback: any 11-char segment in path (reverse to prefer last segment)
+        for seg in reversed(parts):
+            if re.fullmatch(r"[0-9A-Za-z_-]{11}", seg):
+                return seg
+
+    # short youtu.be
+    if host == "youtu.be":
+        candidate = path.lstrip("/")
+        if re.fullmatch(r"[0-9A-Za-z_-]{11}", candidate):
+            return candidate
+
+    # last resort: search the whole string for an 11-char token
+    m = re.search(r"([0-9A-Za-z_-]{11})", youtube_url)
+    if m:
+        return m.group(1)
+
     return None
   
 
 def main():
   # get user api key from settings file
-  api = Api(api_key=settings.YOUTUBE_API_KEY)
+  api = Api(api_key=YOUTUBE_API_KEY)
   # get video URL from command-line argument
   link = sys.argv[1]
   # call func to extract ID from video URL
   video_id = extract_video_id(link)
   title = return_title(api,video_id)
-  os.mkdir(f"comments_normal/{title}")
+  os.mkdir(f"comments_nonlive/{title}")
   # create new directory (named after video title
-  folder_path = f"comments_normal/{title}"
+  folder_path = f"comments_nonlive/{title}"
   os.makedirs(folder_path, exist_ok=True)
   # create metadata text file
   published_at = save_video_metadata(api, video_id, os.path.join(folder_path, "info.txt"))
